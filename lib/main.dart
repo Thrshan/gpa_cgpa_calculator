@@ -16,7 +16,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(
+        title: 'Flutter Demo Home Page',
+      ),
     );
   }
 }
@@ -56,21 +58,8 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Column(
-        children: [
-          GestureDetector(
-            onLongPress: () => _showWheel(),
-            onLongPressEnd: (_) => _hideWheel(),
-            child: Container(
-              height: 20,
-              width: 20,
-              color: Colors.black,
-            ),
-          ),
-          Container(
-            child: _showWheelFlag ? GradeWheel() : Container(),
-          ),
-        ],
+      body: Container(
+        child: GradeWheel(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
