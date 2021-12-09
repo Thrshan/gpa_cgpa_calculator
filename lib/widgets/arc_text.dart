@@ -5,16 +5,18 @@ import 'package:flutter/material.dart';
 class ArcText extends StatelessWidget {
   const ArcText({
     Key? key,
-    required this.radius,
+    this.radius = 100,
     this.angle = 0,
     required this.letter,
-    required this.textStyle,
   }) : super(key: key);
 
   final double radius;
   final double angle;
   final String letter;
-  final TextStyle textStyle;
+  final TextStyle textStyle = const TextStyle(
+    fontSize: 24,
+    color: Colors.black,
+  );
 
   @override
   Widget build(BuildContext context) {

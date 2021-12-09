@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './widgets/grade_wheel.dart';
+import 'widgets/grades_edit_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,22 +34,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   double angle = 0;
-  bool _showWheelFlag = false;
-
-  void _showWheel() {
-    print("dd");
-    setState(() {
-      _showWheelFlag = true;
-    });
-  }
-
-  void _hideWheel() {
-    setState(() {
-      _showWheelFlag = false;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Container(
-        child: GradeWheel(),
+        child: GradesEditPage(),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
