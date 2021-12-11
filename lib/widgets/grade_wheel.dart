@@ -12,13 +12,15 @@ class GradeWheel extends StatefulWidget {
   State<GradeWheel> createState() => _GradeWheelState();
 }
 
+int noOfGrades = 5;
+
 class _GradeWheelState extends State<GradeWheel> {
   List<Map<String, Object>> grades = [
-    {"letter": "A", "angle": (1 * (2 * math.pi / 5))},
-    {"letter": "B", "angle": (2 * (2 * math.pi / 5))},
-    {"letter": "C", "angle": (3 * (2 * math.pi / 5))},
-    {"letter": "D", "angle": (4 * (2 * math.pi / 5))},
-    {"letter": "E", "angle": (5 * (2 * math.pi / 5))}
+    {"letter": "A", "angle": (1 * (2 * math.pi / noOfGrades))},
+    {"letter": "B", "angle": (2 * (2 * math.pi / noOfGrades))},
+    {"letter": "C", "angle": (3 * (2 * math.pi / noOfGrades))},
+    {"letter": "D", "angle": (4 * (2 * math.pi / noOfGrades))},
+    {"letter": "E", "angle": (5 * (2 * math.pi / noOfGrades))}
   ];
 
   double _angle = 0;

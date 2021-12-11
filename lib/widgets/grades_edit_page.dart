@@ -26,15 +26,27 @@ class _GradesEditPageState extends State<GradesEditPage> {
   // };
 
   List<Map<String, Object>> subs = [
-    {"initAngle": 0, "id": 0},
-    {"initAngle": 1.5, "id": 1},
-    {"initAngle": 2, "id": 2},
+    {"initAngle": 0, "id": 0, "grade": ""},
+    {"initAngle": 1.5, "id": 1, "grade": ""},
+    {"initAngle": 2, "id": 2, "grade": ""},
   ];
+
+  List<String> gradeList = ["E", "A", "B", "C", "D"];
+
+  bool switchFromLow = false;
+  bool switchFromHigh = false;
+  double baseVal = 0;
+  double varVal = 0;
+  double angleDeg = 0;
+  int noOfGrades = 5;
+  double angleDegMod = 0;
+  double sectionAngle = 0;
+  int indentNo = 0;
 
   @override
   Widget build(BuildContext context) {
     void _showWheel(int id) {
-      print("show");
+      // print("show");
       setState(() {
         _showWheelFlag = true;
       });
@@ -46,11 +58,36 @@ class _GradesEditPageState extends State<GradesEditPage> {
       });
     }
 
-    void _rotateWheel(int id, double rotation) {
+    void _rotateWheel(int id, double dragYChange) {
       setState(() {
-        subs[id]["initAngle"] = rotation;
+        _angle = (dragYChange / 700) * 4 * math.pi;
+        angleDeg = -(180 * _angle) / math.pi;
+        // print(_angle);
+        var rawAngle = angleDeg;
+        double angleRatio = 0;
+        double curveRatio = 0;
+        var piMod = rawAngle % (360 / noOfGrades);
+        angleRatio = piMod / (360 / noOfGrades);
+        curveRatio = 1 / (1 + math.pow((angleRatio / (1 - angleRatio)), -6));
+        baseVal = rawAngle >= 0
+            ? (rawAngle / (360 / noOfGrades)).truncate() * (360 / noOfGrades)
+            : ((rawAngle / (360 / noOfGrades)).truncate() - 1) *
+                (360 / noOfGrades);
+        varVal = rawAngle >= 0
+            ? (rawAngle - baseVal) * curveRatio
+            : (baseVal - rawAngle) * curveRatio;
+        angleDeg = rawAngle >= 0 ? baseVal + varVal : baseVal - varVal;
+        _angle = -angleDeg * (math.pi / 180);
+
+        // To find what is selected
+        angleDegMod = angleDeg % 360;
+        sectionAngle = 360 / noOfGrades;
+        indentNo = (angleDegMod / sectionAngle).round() % noOfGrades;
+        print("$angleDeg   $sectionAngle   $indentNo");
+
+        subs[id]["initAngle"] = angleDeg;
+        subs[id]["grade"] = gradeList[indentNo];
         _showWheelFlag = true;
-        _angle = rotation;
       });
     }
 
@@ -64,9 +101,7 @@ class _GradesEditPageState extends State<GradesEditPage> {
                 (sub) => GestureDetector(
                   onVerticalDragUpdate: (details) {
                     dragYPosition = details.globalPosition.dy;
-                    dragYDelta = (((dragYPosition - pressYPosition) / 700) *
-                        3 *
-                        math.pi);
+                    dragYDelta = dragYPosition - pressYPosition;
                     _rotateWheel(sub["id"] as int, dragYDelta);
                     prevDragYDelta = dragYDelta;
                   },
@@ -85,7 +120,7 @@ class _GradesEditPageState extends State<GradesEditPage> {
                     width: 50,
                     color: Colors.amber,
                     margin: EdgeInsets.all(50),
-                    child: Text(sub["initAngle"].toString()),
+                    child: Text(sub["grade"] as String),
                   ),
                 ),
               )
