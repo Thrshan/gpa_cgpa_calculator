@@ -29,6 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  sqflite: ^2.0.1
+  path_provider: ^1.6.27
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -58,7 +60,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - assets/CCE_2017.json
+    - assets/courses.json
+    - assets/subject.db
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

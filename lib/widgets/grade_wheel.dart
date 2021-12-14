@@ -1,33 +1,35 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'package:gpa_cgpa_calculator/widgets/arc_text.dart';
+import '../modules/global.dart';
+
+var globalData = Global();
 
 class GradeWheel extends StatefulWidget {
   final double angle;
+  final double initAngle;
+  final String subName;
+  final String subCode;
 
-  const GradeWheel({required this.angle, Key? key}) : super(key: key);
+  const GradeWheel({
+    required this.angle,
+    required this.initAngle,
+    required this.subName,
+    required this.subCode,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<GradeWheel> createState() => _GradeWheelState();
 }
 
 class _GradeWheelState extends State<GradeWheel> {
-  List<Map<String, Object>> grades = [
-    {"letter": "A", "angle": (1 * (2 * math.pi / 5))},
-    {"letter": "B", "angle": (2 * (2 * math.pi / 5))},
-    {"letter": "C", "angle": (3 * (2 * math.pi / 5))},
-    {"letter": "D", "angle": (4 * (2 * math.pi / 5))},
-    {"letter": "E", "angle": (5 * (2 * math.pi / 5))}
-  ];
-
-  double _angle = 0;
-
   double pressYPosition = 0;
   double dragYPosition = 0;
   double dragYDelta = 0;
   double prevDragYDelta = 0;
-  bool _showWheelFlag = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,30 +38,51 @@ class _GradeWheelState extends State<GradeWheel> {
 
     return Stack(
       children: [
-        Container(
-          width: size.width,
-          height: size.height,
-          color: Colors.blue,
-        ),
-        Transform.rotate(
-          angle: _angle,
-          child: Center(
-            child: Container(
-              color: Colors.amber,
-              width: 300,
-              height: 300,
-              child: Stack(
-                  alignment: Alignment.center,
-                  children: grades
-                      .map(
-                        (grade) => ArcText(
-                          angle: grade["angle"] as double,
-                          letter: grade["letter"] as String,
-                        ),
-                      )
-                      .toList()),
-            ),
+        BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+          child: Container(
+            width: size.width,
+            height: size.height,
+            // color: Colors.blue,
           ),
+        ),
+        Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(
+                left: 10,
+                right: 10,
+                top: 50,
+                bottom: 20,
+              ),
+              child: Column(
+                children: [
+                  Text(widget.subName),
+                  Text(widget.subCode),
+                ],
+              ),
+            ),
+            Transform.rotate(
+              angle: _angle,
+              child: Center(
+                child: Container(
+                  // color: Colors.amber,
+                  width: 300,
+                  height: 300,
+                  child: Stack(
+                      alignment: Alignment.center,
+                      children: globalData.grades
+                          .map(
+                            (grade) => ArcText(
+                              angle: grade["angle"] as double,
+                              letter: grade["letter"] as String,
+                            ),
+                          )
+                          .toList()),
+                ),
+              ),
+            ),
+          ],
         )
       ],
     );
